@@ -31,36 +31,55 @@ export default class MainSlider extends Slider {
         }catch(e){}
         
 // Скрываем все ненужные нам слайды
-Array.from(this.slides).forEach(slide => {
-    slide.style.display = 'none';
-});
+        Array.from(this.slides).forEach(slide => {
+            slide.style.display = 'none';
+        });
 // Показываем только тот который по умолчанию
         this.slides[this.slideIndex - 1].style.display = 'block';
         }
 
-        plusSlides(n) {
-            this.showSlides(this.slideIndex += n);
-        }
+    plusSlides(n) {
+        this.showSlides(this.slideIndex += n);
+    }
 // Обработчик события который переключает наш слайд
+    bindTriggers() {
+        this.btns.forEach(item => {
+            item.addEventListener('click', () => {
+                this.plusSlides(1);
+            });
+// Нажимая на логотип возвращаемся на первый слайд    
+        item.parentNode.previousElementSibling.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.slideIndex = 1;
+                this.showSlides(this.slideIndex);
+            });
+        });
+
+        document.querySelectorAll('.prevmodule').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                this.plusSlides(-1);
+            });
+        });
+
+        document.querySelectorAll('.nextmodule').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                this.plusSlides(1);
+            });
+        });
+    }
+    
     render() {
-        try {
+        if (this.container) {
             try {
                 this.hanson = document.querySelector('.hanson');
             } catch(e){}
     
-            this.btns.forEach(item => {
-                item.addEventListener('click', () => {
-                    this.plusSlides(1);
-                });
-    // Нажимая на логотип возвращаемся на первый слайд
-                item.parentNode.previousElementSibling.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    this.slideIndex = 1;
-                    this.showSlides(this.slideIndex);
-                });
-            });
-    
             this.showSlides(this.slideIndex);
-        } catch(e){}
+            this.bindTriggers();
+        }
     }
 }
