@@ -68,38 +68,40 @@ export default class MiniSlider extends Slider {
     }
 // Инициализация плеера
     init() {
-        this.container.style.cssText = `
-        display: flex;
-        flex-wrap: wrap;
-        overflow: hidden;
-        align-items: flex-start;
-    `;
-
-        this.bindTriggers();
-        this.decorizeSlides();
-
-        if (this.autoplay) {
-// При наведении мышккой на слайдер или кнопки, слайдер останавливается
-            this.container.addEventListener("mouseenter", () =>
-                clearInterval(this.paused)
-            );
-            this.next.addEventListener("mouseenter", () =>
-                clearInterval(this.paused)
-            );
-            this.prev.addEventListener("mouseenter", () =>
-                clearInterval(this.paused)
-            );
-// Если убипаем мышку со слайдера или кнопок, слайдер продолжает работать
-            this.container.addEventListener("mouseleave", () =>
-                this.activateAnimation()
-            );
-            this.next.addEventListener("mouseleave", () =>
-                this.activateAnimation()
-            );
-            this.prev.addEventListener("mouseleave", () =>
-                this.activateAnimation()
-            );
-            this.activateAnimation();
-        }
+        try {
+            this.container.style.cssText = `
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            align-items: flex-start;
+        `;
+    
+            this.bindTriggers();
+            this.decorizeSlides();
+    
+            if (this.autoplay) {
+    // При наведении мышккой на слайдер или кнопки, слайдер останавливается
+                this.container.addEventListener("mouseenter", () =>
+                    clearInterval(this.paused)
+                );
+                this.next.addEventListener("mouseenter", () =>
+                    clearInterval(this.paused)
+                );
+                this.prev.addEventListener("mouseenter", () =>
+                    clearInterval(this.paused)
+                );
+    // Если убипаем мышку со слайдера или кнопок, слайдер продолжает работать
+                this.container.addEventListener("mouseleave", () =>
+                    this.activateAnimation()
+                );
+                this.next.addEventListener("mouseleave", () =>
+                    this.activateAnimation()
+                );
+                this.prev.addEventListener("mouseleave", () =>
+                    this.activateAnimation()
+                );
+                this.activateAnimation();
+            }
+        } catch(e){}
     }
 }

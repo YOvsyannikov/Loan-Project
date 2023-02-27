@@ -155,12 +155,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Difference; });
 class Difference {
   constructor(oldOfficer, newOfficer, items) {
-    this.oldOfficer = document.querySelector(oldOfficer);
-    this.newOfficer = document.querySelector(newOfficer);
-    this.oldItems = this.oldOfficer.querySelectorAll(items);
-    this.newItems = this.newOfficer.querySelectorAll(items);
-    this.oldCounter = 0;
-    this.newCounter = 0;
+    try {
+      this.oldOfficer = document.querySelector(oldOfficer);
+      this.newOfficer = document.querySelector(newOfficer);
+      this.oldItems = this.oldOfficer.querySelectorAll(items);
+      this.newItems = this.newOfficer.querySelectorAll(items);
+      this.oldCounter = 0;
+      this.newCounter = 0;
+    } catch (e) {}
   }
   //При нажатии на тконку + показывает следующий слайдик. 
   //Доходя до последнего элемента, удираем кнопку с +.
@@ -187,10 +189,12 @@ class Difference {
   }
   // Инициализируем весь слайдер
   init() {
-    this.hideItems(this.oldItems);
-    this.hideItems(this.newItems);
-    this.bindTriggers(this.oldOfficer, this.oldItems, this.oldCounter);
-    this.bindTriggers(this.newOfficer, this.newItems, this.newCounter);
+    try {
+      this.hideItems(this.oldItems);
+      this.hideItems(this.newItems);
+      this.bindTriggers(this.oldOfficer, this.oldItems, this.oldCounter);
+      this.bindTriggers(this.newOfficer, this.newItems, this.newCounter);
+    } catch (e) {}
   }
 }
 
@@ -212,7 +216,7 @@ class Form {
     this.inputs = document.querySelectorAll('input');
     this.message = {
       loading: 'Загрузка...',
-      success: 'Спасибо! Скоро мы с вами свяжемся',
+      success: 'Спасибо! Скоро мы с вами свяжемся!',
       failure: 'Что-то пошло не так...'
     };
     this.path = 'assets/question.php';
@@ -228,7 +232,7 @@ class Form {
     const mailInputs = document.querySelectorAll('[type="email"]');
     mailInputs.forEach(input => {
       input.addEventListener('keypress', function (e) {
-        if (e.key.match(/[^a-z 0-9 @\.]/ig)) {
+        if (e.key.match(/[^a-z 0-9 @ \.]/ig)) {
           e.preventDefault();
         }
       });
@@ -236,7 +240,6 @@ class Form {
   }
   initMask() {
     let setCursorPosition = (pos, elem) => {
-      // Установка курсора
       elem.focus();
       if (elem.setSelectionRange) {
         elem.setSelectionRange(pos, pos);
@@ -271,7 +274,7 @@ class Form {
         setCursorPosition(this.value.length, this);
       }
     }
-    let inputs = document.querySelectorAll('[name="phone]');
+    let inputs = document.querySelectorAll('[name="phone"]');
     inputs.forEach(input => {
       input.addEventListener('input', createMask);
       input.addEventListener('keypress', createMask);
@@ -294,7 +297,7 @@ class Form {
         e.preventDefault();
         let statusMessage = document.createElement('div');
         statusMessage.style.cssText = `
-                    margin-marginTop: 15px;
+                    margin-top: 15px;
                     font-size: 18px;
                     color: grey;
                 `;
@@ -434,20 +437,22 @@ class MainSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
   // Обработчик события который переключает наш слайд
   render() {
     try {
-      this.hanson = document.querySelector('.hanson');
+      try {
+        this.hanson = document.querySelector('.hanson');
+      } catch (e) {}
+      this.btns.forEach(item => {
+        item.addEventListener('click', () => {
+          this.plusSlides(1);
+        });
+        // Нажимая на логотип возвращаемся на первый слайд
+        item.parentNode.previousElementSibling.addEventListener('click', e => {
+          e.preventDefault();
+          this.slideIndex = 1;
+          this.showSlides(this.slideIndex);
+        });
+      });
+      this.showSlides(this.slideIndex);
     } catch (e) {}
-    this.btns.forEach(item => {
-      item.addEventListener('click', () => {
-        this.plusSlides(1);
-      });
-      // Нажимая на логотип возвращаемся на первый слайд
-      item.parentNode.previousElementSibling.addEventListener('click', e => {
-        e.preventDefault();
-        this.slideIndex = 1;
-        this.showSlides(this.slideIndex);
-      });
-    });
-    this.showSlides(this.slideIndex);
   }
 }
 
@@ -525,25 +530,27 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
   }
   // Инициализация плеера
   init() {
-    this.container.style.cssText = `
-        display: flex;
-        flex-wrap: wrap;
-        overflow: hidden;
-        align-items: flex-start;
-    `;
-    this.bindTriggers();
-    this.decorizeSlides();
-    if (this.autoplay) {
-      // При наведении мышккой на слайдер или кнопки, слайдер останавливается
-      this.container.addEventListener("mouseenter", () => clearInterval(this.paused));
-      this.next.addEventListener("mouseenter", () => clearInterval(this.paused));
-      this.prev.addEventListener("mouseenter", () => clearInterval(this.paused));
-      // Если убипаем мышку со слайдера или кнопок, слайдер продолжает работать
-      this.container.addEventListener("mouseleave", () => this.activateAnimation());
-      this.next.addEventListener("mouseleave", () => this.activateAnimation());
-      this.prev.addEventListener("mouseleave", () => this.activateAnimation());
-      this.activateAnimation();
-    }
+    try {
+      this.container.style.cssText = `
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            align-items: flex-start;
+        `;
+      this.bindTriggers();
+      this.decorizeSlides();
+      if (this.autoplay) {
+        // При наведении мышккой на слайдер или кнопки, слайдер останавливается
+        this.container.addEventListener("mouseenter", () => clearInterval(this.paused));
+        this.next.addEventListener("mouseenter", () => clearInterval(this.paused));
+        this.prev.addEventListener("mouseenter", () => clearInterval(this.paused));
+        // Если убипаем мышку со слайдера или кнопок, слайдер продолжает работать
+        this.container.addEventListener("mouseleave", () => this.activateAnimation());
+        this.next.addEventListener("mouseleave", () => this.activateAnimation());
+        this.prev.addEventListener("mouseleave", () => this.activateAnimation());
+        this.activateAnimation();
+      }
+    } catch (e) {}
   }
 }
 
@@ -571,7 +578,9 @@ class Slider {
       autoplay
     } = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     this.container = document.querySelector(container);
-    this.slides = this.container.children;
+    try {
+      this.slides = this.container.children;
+    } catch (e) {}
     this.btns = document.querySelectorAll(btns);
     this.prev = document.querySelector(prev);
     this.next = document.querySelector(next);

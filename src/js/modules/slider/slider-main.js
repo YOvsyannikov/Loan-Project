@@ -44,21 +44,23 @@ Array.from(this.slides).forEach(slide => {
 // Обработчик события который переключает наш слайд
     render() {
         try {
-            this.hanson = document.querySelector('.hanson');
+            try {
+                this.hanson = document.querySelector('.hanson');
+            } catch(e){}
+    
+            this.btns.forEach(item => {
+                item.addEventListener('click', () => {
+                    this.plusSlides(1);
+                });
+    // Нажимая на логотип возвращаемся на первый слайд
+                item.parentNode.previousElementSibling.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.slideIndex = 1;
+                    this.showSlides(this.slideIndex);
+                });
+            });
+    
+            this.showSlides(this.slideIndex);
         } catch(e){}
-
-        this.btns.forEach(item => {
-            item.addEventListener('click', () => {
-                this.plusSlides(1);
-            });
-// Нажимая на логотип возвращаемся на первый слайд
-            item.parentNode.previousElementSibling.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.slideIndex = 1;
-                this.showSlides(this.slideIndex);
-            });
-        });
-
-        this.showSlides(this.slideIndex);
     }
 }
